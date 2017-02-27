@@ -15,7 +15,7 @@ unsigned long fib_r(unsigned int n){
 }
 
 void wypisz(unsigned int n){
-	for(unsigned int i=0; i<n; i++){
+	for(unsigned int i=1; i<=n; i++){
 		cout << fib_r(i) << endl;
 	}	
 }
