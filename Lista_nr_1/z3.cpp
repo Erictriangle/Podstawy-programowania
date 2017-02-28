@@ -2,11 +2,29 @@
 #include <cmath>
 using namespace std;
 
-void pobierz();
-float wyliczDelte(float a, float b, float c);
-float wyliczX1(float a, float b, float delta);
-float wyliczX2(float a, float b, float x1);
 float a, b, c, x1, x2, delta;
+
+void pobierz(){
+	
+	cout << "Podaj wartosc parametru a:" << endl;
+	cin >> a;
+	cout << "Podaj wartosc parametru b:" << endl;
+	cin >> b;
+	cout << "Podaj wartosc parametru c:" << endl;
+	cin >> c;
+}
+
+float wyliczDelte(float a, float b, float c){
+	return sqrt(b*b-4*a*c);
+}
+
+float wyliczX1(float a, float b, float delta){
+	return ((-b+delta)/(2*a));
+}
+
+float wyliczX2(float a, float b, float x1){
+	return ((-c/a)/x1);
+}
 
 int main(){
 	pobierz();
@@ -26,23 +44,5 @@ int main(){
 	return 0;
 }
 
-void pobierz(){
-	cout << "Podaj wartosc parametru a:" << endl;
-	cin >> a;
-	cout << "Podaj wartosc parametru b:" << endl;
-	cin >> b;
-	cout << "Podaj wartosc parametru c:" << endl;
-	cin >> c;
-}
 
-float wyliczDelte(float a, float b, float c){
-	return sqrt(b*b-4*a*c);
-}
 
-float wyliczX1(float a, float b, float delta){
-	return ((-b+delta)/(2*a));
-}
-
-float wyliczX2(float a, float b, float x1){
-	return ((-b/a)-x1);
-}
