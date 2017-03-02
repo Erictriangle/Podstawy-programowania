@@ -9,8 +9,8 @@ void pobierz(){
 }
 
 unsigned long sil_r(unsigned int n){
-	if(n==0 || n==1) return 1;
-	return ((sil_r(n))*(sil_r(n-1)));
+	if(n==0) return 1;
+	return (n*sil_r(n-1));
 }
 
 int main(){
