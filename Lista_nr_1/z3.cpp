@@ -28,7 +28,13 @@ float wyliczX2(float a, float b, float x1){
 
 int main(){
 	pobierz();
+	try{
 	delta = wyliczDelte(a, b, c);
+	}
+	catch(int a==0){
+		cout << "Wyjatek: " << w;
+	}
+
 	if(delta >=  0){
 		x1 = wyliczX1(a, b, delta);
 		if(delta == 0){
