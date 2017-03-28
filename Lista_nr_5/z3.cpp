@@ -3,8 +3,7 @@
 using namespace std;
 
 
-void wpisz_do_pliku(string np, string tekst, unsigned int ile=10){
-	ofstream plik(np.c_str(), ios::app);
+void wpisz_do_pliku(ofstream& plik, string tekst, unsigned int ile=10){
 	for(unsigned int i=0; i<ile; i++){
 		plik << tekst << endl;
 	}
@@ -12,6 +11,7 @@ void wpisz_do_pliku(string np, string tekst, unsigned int ile=10){
 }
 
 int main(){
-	wpisz_do_pliku("a.txt","Hello World");
+	ofstream plik("b.txt", ios::app);
+	wpisz_do_pliku(plik,"Hello World");
 	return 0;
 }
