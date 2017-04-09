@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//Funkcje przeciazone do sprawdzania liczby hasel 
 unsigned int checkSize(string* &tab){
 	return atoi(tab[0].c_str());
 }
@@ -18,18 +19,23 @@ unsigned int checkSize(fstream& plik){
 	return atoi(str.c_str());
 }
 
-string* load(fstream& plik){
-	unsigned int size = checkSize(plik);
+//Wczytywanie bazy danych
+string* load(){
+	fstream iPlik;
+	iPlik.open("iPlikZ5.txt",ios::in);
+
+	unsigned int size = checkSize(iPlik);
 	string* tab = new string[size+1];
 	
 	tab[0] = to_string(size);
 	for(unsigned int i=1; i<size+1; i++){
-		getline(plik,tab[i]);
+		getline(iPlik,tab[i]);
 	}
-	
+	iPlik.close();
 	return tab;
 }
 
+//Odczytania hasel z tablicy(nie z pliku!)
 void read(string* &tab){
 	unsigned int size = checkSize(tab);
 	cout << size << endl;
@@ -38,6 +44,7 @@ void read(string* &tab){
 	}
 }
 
+//Dodanie hasla na koniec tablicy
 string* add(string* &tab,string text){
 	unsigned int size = checkSize(tab);
 	string* nTab = new string[size+2];
@@ -52,6 +59,7 @@ string* add(string* &tab,string text){
 	return nTab;
 }
 
+//Usuniecie hasla z konca tablicy
 string* remove(string* tab){
 	unsigned int size =checkSize(tab);
 	string* nTab = new string[size];
@@ -65,6 +73,7 @@ string* remove(string* tab){
 	return nTab;
 }
 
+//Sprawdzenie obecnosci hasla w tablicy
 void find(string* &tab,string text){
 		unsigned int size = checkSize(tab);
 		string spr = "Nie znaleziono!";
@@ -75,23 +84,27 @@ void find(string* &tab,string text){
 		cout << spr << endl;
 }
 
-void save(fstream& plik,string* &tab){
+//Zapisanie aktualnej zawartosci tablicy do pliku
+void save(string* &tab){
+	fstream oPlik;
+	oPlik.open("iPlikZ5.txt",ios::out);
 	unsigned int size =checkSize(tab);
 	
-	plik << size << endl;
+	oPlik << size << endl;
 	for(unsigned int i=1; i<size+1; i++){
-		plik << tab[i] << endl;
+		oPlik << tab[i] << endl;
 	}
+	oPlik.close();
 }
 
 int main(){
 	char chose = 'e';
-	fstream iPlik("iPlikZ5.txt");
-	fstream oPlik("iPlikZ5.txt");
 	string *tab;
 	string text;
 	
 	do{
+	
+	cout << endl;
 	cout << "Witam w bazie danych hasel z internetu." << endl;
 	cout << "Wybierz jedna z ponizszych opcji:" << endl;
 	cout << "i - wczytaj baze danych" << endl;
@@ -105,11 +118,7 @@ int main(){
 
 	switch(chose){
 		case 'i':
-			if(!iPlik){
-				cerr << "Bląd wczytania pliku!" << endl;
-				return -1;
-			}
-			tab = load(iPlik);
+			tab = load();
 			break;
 	
 		case 'o':
@@ -133,10 +142,7 @@ int main(){
 			break;
 		
 		case 's':
-			if(!oPlik){
-				cerr << "Błąd wczytania pliku!" << endl;
-			}
-			save(oPlik,tab);
+			save(tab);
 			break;
 		
 		case 'e':

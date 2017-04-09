@@ -61,3 +61,4 @@ int main(){
 	delete[] wek;
 	return 0;
 }
+
