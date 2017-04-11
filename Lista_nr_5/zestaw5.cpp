@@ -20,18 +20,17 @@ unsigned int checkSize(fstream& plik){
 }
 
 //Wczytywanie bazy danych
-string* load(){
-	fstream iPlik;
-	iPlik.open("iPlikZ5.txt",ios::in);
+string* load(fstream& plik){
+	plik.open("iPlikZ5.txt",ios::in);
 
-	unsigned int size = checkSize(iPlik);
+	unsigned int size = checkSize(plik);
 	string* tab = new string[size+1];
 	
 	tab[0] = to_string(size);
 	for(unsigned int i=1; i<size+1; i++){
-		getline(iPlik,tab[i]);
+		getline(plik,tab[i]);
 	}
-	iPlik.close();
+	plik.close();
 	return tab;
 }
 
@@ -85,22 +84,23 @@ void find(string* &tab,string text){
 }
 
 //Zapisanie aktualnej zawartosci tablicy do pliku
-void save(string* &tab){
-	fstream oPlik;
-	oPlik.open("iPlikZ5.txt",ios::out);
+void save(fstream& plik,string* &tab){
+	fstream plik;
+	plik.open("iPlikZ5.txt",ios::out);
 	unsigned int size =checkSize(tab);
 	
-	oPlik << size << endl;
+	plik << size << endl;
 	for(unsigned int i=1; i<size+1; i++){
-		oPlik << tab[i] << endl;
+		plik << tab[i] << endl;
 	}
-	oPlik.close();
+	plik.close();
 }
 
 int main(){
 	char chose = 'e';
 	string *tab;
 	string text;
+	fstream plik;
 	
 	do{
 	
@@ -118,7 +118,7 @@ int main(){
 
 	switch(chose){
 		case 'i':
-			tab = load();
+			tab = load(plik);
 			break;
 	
 		case 'o':
@@ -142,7 +142,7 @@ int main(){
 			break;
 		
 		case 's':
-			save(tab);
+			save(plik,tab);
 			break;
 		
 		case 'e':
