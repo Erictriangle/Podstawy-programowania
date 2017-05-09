@@ -1,115 +1,100 @@
 //Andrzej Wlodarczyk
 
-/*Program ma za zadanie stworzyc tabele
- * szyfrujaca, za pomoca ktorej 
- * zamieniamy tresc wejsciowego 
- * pliku tekstowego i zapisujemy go 
- * w innym pliku.
- * Dziala to wylacznie w jedna
- * strone z powodu niezastosowania
- * pelnego alfabetu w strukturze. */
+/*
+ * Struktura pliku tekstowego
+ * 
+ * 1.Liczba studentow w bazie danych
+ * 2.Liczba niezaliczonych kursow
+ * 3.Imie nazwisko
+ * 4.Pierwszy niezaliczony kurs
+ * 5.Drugi niezaliczony kurs itd.
+ * 6.Liczba niezaliczonych kursow
+ * 7.Imie nazwisko
+ * 8.itd....
+ * 
+ */ 
 
-#include <iostream> 
-#include <fstream>
+
+#include <iostream>
 #include <string>
+#include <sstream>
+#include <fstream>
+#include <cstdlib>
 
 using namespace std;
 
-/* Struktura zawierajaca schemat 
- * szyfrowania pliku tekstowego.
- * Wersja ta zamienia tylko kilka
- * liter, gdyz jest to prezentacja
- * pewnego zamyslu, a nie pelna
- * realizacja programu*/
-struct szyfrowanie{
-	char a;
-	char e;
-	char y;
-	char i;
-	char o;
-	char u;
-};
 
 
-string* wczytaj(fstream& plik, string nazwa){
+
+string** wczytaj(fstream& plik,char* nazwa){
 	plik.open(nazwa,ios::in);
-	if (!plik){
-		cerr << "Blad otwarcia pliku wejsciowego!" << endl;
+	if(!plik){
+		cerr << "Nie otwrto pliku!" << endl;
 		exit(-1);
-	}	
-	
-	string napis;
-	unsigned int wiersze = 0;
-
-	while(!plik.eof()){
-		getline(plik,napis);
-		wiersze++;
-	}
-
-	plik.seekg(0);
-	string* tekst = new string[wiersze];
-	for(unsigned int i=0; i<wiersze; i++){
-		getline(plik,tekst[i]);
 	}
 	
-	cout << tekst[1] << tekst[2] << endl;
-	return tekst;
+	unsigned int rozmiar1;
+	unsigned int rozmiar2;
+	string wiersz;
 	
+	getline(plik,wiersz);
+	rozmiar1 = atoi(wiersz.c_str());
+	string** tab = new string*[rozmiar1+1];
+	
+	for(unsigned int i=0; i<rozmiar1+1; i++){
+		if(i == 0){
+			tab[i] = new string[1];
+			tab[i][0] = wiersz;
+		} else{
+			getline(plik,wiersz);
+			rozmiar2 = atoi(wiersz.c_str());
+			tab[i] = new string[rozmiar2+2];
+			tab[i][1] = wiersz;
+			
+			
+			for(unsigned int j=0; j<rozmiar2+2; j++){
+				if(j != 1){
+					 getline(plik,wiersz);
+					 tab[i][j] = wiersz;
+				 }
+			}
+			
+		}
+		
+	}
+	plik.close();
+	
+	return tab;
 }
 
-/*void zapisz(fstream& plik, string nazwa, string* tekst, szyfrowanie szyfr){
-	plik.open(nazwa,ios::out);
-	if(!plik){
-		cerr << "Blad otwarcia pliku wyjsciowego!" << endl;
-		exit(-1);
+void wypisz(fstream& plik, string** tab){
+	unsigned int rozmiar1 = atoi(tab[0][0].c_str());
+	unsigned int rozmiar2;
+
+
+	for(unsigned int i=1; i<rozmiar1+1; i++){
+		rozmiar2 = atoi(tab[i][1].c_str());
+		
+		
+		for(unsigned int j=0; j<rozmiar2+2; j++){
+			cout << tab[i][j] << " ";
+		} 
+		cout << endl;
 	}
+}
 
-	unsigned int j = 0;
-	while(nazwa[j][0] == '\0'){
-		for(unsigned int i=0; i<tekst.length(); i++){
-			if(nazwa[i] == 'a') nazwa[i] = szyfr.a;
-			if(nazwa[i] == 'e') nazwa[i] = szyfr.e;
-			if(nazwa[i] == 'y') nazwa[i] = szyfr.y;
-			if(nazwa[i] == 'i') nazwa[i] = szyfr.i;
-			if(nazwa[i] == 'o') nazwa[i] = szyfr.o;
-			if(nazwa[i] == 'u') nazwa[i] = szyfr.u;
 
-		}
-		j++;
-	}
-	plik << tekst << endl;
-}*/
-
-int main(int argc, char**argv){
-	if(argc != 3 ){
-		cerr << "Niepoprawna liczba parametrow!" << endl;
+int main(int argc, char** argv){
+	if(argc != 2){
+		cerr << "Niepoprawne parametry wejsciowe!" << endl;
 		return -1;
 	}
-
-	fstream plikWejsciowy;
-	fstream plikWyjsciowy;
-	string nazwaWejsciowego = argv[1];
-	string nazwaWyjsciowego = argv[2];
-	szyfrowanie szyfr;
-
-	cout << "a =";
-	cin >> szyfr.a;
-	cout << "e =";
-	cin >> szyfr.e;
-	cout << "y =";
-	cin >> szyfr.y;
-	cout << "i =";
-	cin >> szyfr.i;
-	cout << "o =";
-	cin >> szyfr.o;
-	cout << "u =";
-	cin >> szyfr.u;
 	
-	string* tekst = wczytaj(plikWejsciowy,nazwaWejsciowego);
-//	zapisz(plikWyjsciowy,argv[2],tekst,szyfr);
+	fstream plik;
+	string** tab = wczytaj(plik,argv[1]);
 
-
-	delete[] tekst;
+	wypisz(plik,tab);
+	
+	delete[] tab;
 	return 0;
-
 }

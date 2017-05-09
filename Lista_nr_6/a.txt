@@ -1,3 +1,27 @@
-Pierwsza linijka 
-druga linijka
-trzecia linijka
+6
+2
+Jan Kowalski
+kurs1 
+kurs2
+1
+Krzysztof Nowak
+kurs1
+1
+Olga Biala
+kurs1
+3
+Kamil Wielki
+kurs1
+kurs2
+kurs3
+2
+Ktos Maly
+Kurs1 
+Kurs2
+5
+Niezdal Jakis
+Kurs1
+Kurs2
+Kurs3
+Kurs4
+Kurs5
